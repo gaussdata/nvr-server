@@ -1,0 +1,48 @@
+{
+  "name": "nvr-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc && tsc-alias",
+    "start": "tsc && tsc-alias && node dist/index.js",
+    "dev": "concurrently \"tsc --watch\" \"tsc-alias --watch\" \"nodemon dist/index.js\"",
+    "lint": "eslint",
+    "lint:fix": "eslint --fix",
+    "prepare": "husky"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "better-sqlite3": "^9.6.0",
+    "express": "^5.2.1",
+    "express-validator": "^7.2.1",
+    "onvif": "^0.8.1",
+    "p-limit": "^7.2.0"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^6.0.0",
+    "@types/better-sqlite3": "^7.6.9",
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.0.15",
+    "autocannon": "^8.0.0",
+    "concurrently": "^9.2.0",
+    "eslint": "^9.38.0",
+    "husky": "^9.1.7",
+    "nodemon": "^3.1.10",
+    "tsc-alias": "^1.8.16",
+    "typescript": "^5.8.3"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "better-sqlite3"
+    ]
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx,json,css,scss,less,md}": [
+      "eslint --fix"
+    ]
+  }
+}

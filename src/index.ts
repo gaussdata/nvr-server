@@ -1,4 +1,6 @@
 import express from 'express'
+import middlewareCors from './middlewares/cors.js'
+import middlewareLog from './middlewares/log.js'
 import logger from './utils/logger.js'
 
 const app = express()
@@ -8,6 +10,11 @@ app.set('trust proxy', 1)
 app.use(express.text())
 // json 解析
 app.use(express.json({ limit: '1024kb' }))
+
+// cors 跨域
+app.use(middlewareCors) // or use nginx
+
+app.use(middlewareLog)
 
 // 当客户端以get方式访问/路由时
 app.get('/', (req: express.Request, res: express.Response) => {

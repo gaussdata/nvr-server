@@ -1,12 +1,19 @@
-import express from "express";
+import express from 'express'
+import logger from './utils/logger.js'
 
-const app = express();
+const app = express()
 
-app.get("/", (req, res) => {
-  res.send("Hello, World!");
-});
+app.set('trust proxy', 1)
+// text 解析
+app.use(express.text())
+// json 解析
+app.use(express.json({ limit: '1024kb' }))
 
-const port = 3000;
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
-});
+// 当客户端以get方式访问/路由时
+app.get('/', (req: express.Request, res: express.Response) => {
+  res.send('Hello Express')
+})
+// 程序监听3000端口
+app.listen(3000, () => {
+  logger.info('Server Listen at port 3000 http://localhost:3000')
+})

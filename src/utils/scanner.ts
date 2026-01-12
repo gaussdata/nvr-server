@@ -1,62 +1,61 @@
-import net from "net";
-import pLimit from "p-limit";
+import net from 'node:net'
+import pLimit from 'p-limit'
+import logger from './logger'
 
 export class Scanner {
   static async scan(
-    prefix = "192.168.1",
+    prefix = '192.168.1',
     start = 100,
     end = 255,
     port = 554,
-    timeout = 1000
+    timeout = 1000,
   ) {
-    const limit = pLimit(16);
-    const ips = [];
+    const limit = pLimit(16)
+    const ips = []
     for (let i = start; i <= end; i++) {
-      ips.push(`${prefix}.${i}`);
+      ips.push(`${prefix}.${i}`)
     }
 
     const results = await Promise.all(
       ips.map(ip =>
         limit(async () => {
-          console.log(`测试 ${ip}:${port}`);
-          const ok = await this.testConnect(ip, port, timeout);
+          logger.info(`测试 ${ip}:${port}`)
+          const ok = await this.testConnect(ip, port, timeout)
           if (ok) {
-            console.log(`找到 ${ip}:${port}`);
-            return ip;
+            logger.info(`找到 ${ip}:${port}`)
+            return ip
           }
-          return null;
-        })
-      )
-    );
+          return null
+        }),
+      ),
+    )
 
-    return results.filter(Boolean);
+    return results.filter(Boolean)
   }
+
   /**
    * 测试端口是否开放
    */
   static testConnect(host: string, port: number, timeout: number) {
     return new Promise((resolve) => {
-      const socket = new net.Socket();
-      let connected = false;
+      const socket = new net.Socket()
+      socket.setTimeout(timeout)
 
-      socket.setTimeout(timeout);
+      socket.on('connect', () => {
+        socket.destroy()
+        resolve(true)
+      })
 
-      socket.on("connect", () => {
-        connected = true;
-        socket.destroy();
-        resolve(true);
-      });
+      socket.on('timeout', () => {
+        socket.destroy()
+        resolve(false)
+      })
 
-      socket.on("timeout", () => {
-        socket.destroy();
-        resolve(false);
-      });
+      socket.on('error', () => {
+        resolve(false)
+      })
 
-      socket.on("error", () => {
-        resolve(false);
-      });
-
-      socket.connect(port, host);
-    });
+      socket.connect(port, host)
+    })
   }
 }

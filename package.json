@@ -1,9 +1,12 @@
 {
   "name": "nvr-server",
+  "type": "module",
   "version": "1.0.0",
   "description": "",
+  "author": "",
+  "license": "ISC",
+  "keywords": [],
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "build": "tsc && tsc-alias",
     "start": "tsc && tsc-alias && node dist/index.js",
@@ -12,15 +15,13 @@
     "lint:fix": "eslint --fix",
     "prepare": "husky"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "better-sqlite3": "^9.6.0",
     "express": "^5.2.1",
     "express-validator": "^7.2.1",
     "onvif": "^0.8.1",
-    "p-limit": "^7.2.0"
+    "p-limit": "^7.2.0",
+    "winston": "^3.19.0"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^6.0.0",
